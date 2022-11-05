@@ -12,22 +12,27 @@ if (isset($_POST['submit'])) {
     $confirmPassword = $_POST['confirm_password'];
     $birthday = $_POST['birthday'];
     if ($password == $confirmPassword) {
-        $email = $funObj->isUserExist($emailid);
-        if (!$email) {
-            $register = $funObj->UserRegister($username, $emailid, $password, $birthday);
-            if ($register) {
-                echo "<script>alert('Registration Successful')</script>";
-                header('Location:login.php');
+
+        if (preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $emailid) && !empty($password) && !empty($username) && !empty($birthday)) {
+
+            $email = $funObj->isUserExist($emailid);
+            if (!$email) {
+                $register = $funObj->UserRegister($username, $emailid, $password, $birthday);
+                if ($register) {
+                    echo "<script>alert('Registration Successful')</script>";
+                    header('Location:login.php');
+                } else {
+                    echo "<script>alert('Registration Not Successful')</script>";
+                }
             } else {
-                echo "<script>alert('Registration Not Successful')</script>";
+                echo "<script>alert('Email Already Exist')</script>";
             }
         } else {
-            echo "<script>alert('Email Already Exist')</script>";
+            echo "<script>alert('Password Not Match')</script>";
         }
-    } else {
-        echo "<script>alert('Password Not Match')</script>";
     }
-} ?>
+} 
+?>
 
 <?php include 'includes/header.php' ?>
 <div class="container w-50 mt-5">

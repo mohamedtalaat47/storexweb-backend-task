@@ -23,11 +23,12 @@ if (!empty($_GET['delid'])) {
         <h5 class="mb-0">Movies</h5>
 
         <form class="d-flex align-items-center" method="POST">
-            
+
             <input class="form-control mx-3" type="text" name="name" placeholder="search by name">
 
             <label class="form-label mx-3">category </label>
             <select class="form-control" name="category">
+            <option value="all">all</option>
                 <?php
                 $crud = new crud();
                 $result = $crud->selectalldata("categories");
@@ -74,7 +75,9 @@ if (!empty($_GET['delid'])) {
                         $query .= " and title LIKE '%" . $_POST['name'] . "%'";
                     }
                     if (isset($_POST['category'])) {
-                        $query .= " and category_id = " . $_POST['category'] . "";
+                        if ($_POST['category'] !== 'all') {
+                            $query .= " and category_id = " . $_POST['category'] . "";
+                        }
                     }
                     $result = $db->connection->query($query);
                 } else {

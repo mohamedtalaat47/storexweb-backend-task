@@ -4,18 +4,20 @@ include_once('includes/user.php');
 
 $funObj = new user();
 if (isset($_POST['submit'])) {
+
+
     $emailid = $_POST['email'];
     $password = $_POST['password'];
-    $user = $funObj->Login($emailid, $password);
-    if ($user) {
-        // Registration Success  
-        header("location:index.php");
-        // echo "done";
 
-    } else {
-        // Registration Failed  
-        echo "<script>alert('Email / Password Not Match')</script>";
-        // echo "error";
+    if (preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $emailid) && !empty($password)) {
+
+        $user = $funObj->Login($emailid, $password);
+        if ($user) {
+            header("location:index.php");
+        } else {
+            echo "<script>alert('Email / Password Not Match')</script>";
+        }
+
     }
 } ?>
 
@@ -25,13 +27,13 @@ if (isset($_POST['submit'])) {
     <form method="post" name="login">
         <!-- Email input -->
         <div class="form-outline mb-4">
-            <input type="email" id="form2Example1" class="form-control" name="email" required/>
+            <input type="email" id="form2Example1" class="form-control" name="email" required />
             <label class="form-label" for="form2Example1">Email address</label>
         </div>
 
         <!-- Password input -->
         <div class="form-outline mb-4">
-            <input type="password" id="form2Example2" class="form-control" name="password" required/>
+            <input type="password" id="form2Example2" class="form-control" name="password" required />
             <label class="form-label" for="form2Example2">Password</label>
         </div>
 
